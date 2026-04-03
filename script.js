@@ -51,3 +51,9 @@ function showTab(category) {
         activeBtn.classList.add('active');
     }
 }
+
+document.getElementById('vinInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        fetchVinData();
+    }
+});
