@@ -9,19 +9,27 @@
 <div class="container">
     <h1>Car VIN Decoder</h1>
     <div class="search-box">
-        <input type="text" id="vinInput" placeholder="Enter 17-character VIN...">
-        <button onclick="fetchVinData()">Decode</button>
+        <input type="text" id="vinInput" placeholder="Введіть VIN...">
+        <button onclick="fetchVinData()">Пошук</button>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn-secondary" onclick="openGoogleImages()">📸 Пошук Зображень</button>
+        <button id="stickerBtn" class="btn-sticker" style="display:none;">📄 Window Sticker</button>
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
-        <button class="tab-btn" onclick="showTab('engine')">Engine</button>
-        <button class="tab-btn" onclick="showTab('safety')">Safety</button>
-        <button class="tab-btn" onclick="showTab('raw')">Raw Data</button>
+        <button class="tab-btn" onclick="showTab('overview')">Огляд</button>
+        <button class="tab-btn" onclick="showTab('engine')">Двигун</button>
+        <button class="tab-btn" onclick="showTab('exterior')">Екстер'єр</button>
+        <button class="tab-btn" onclick="showTab('interior')">Інтер'єр</button>
+        <button class="tab-btn" onclick="showTab('mechanical')">Механіка</button>
+        <button class="tab-btn" onclick="showTab('safety')">Безпека</button>
+        <button class="tab-btn" onclick="showTab('raw')">Все</button>
     </div>
 
     <div id="resultContent" class="content-area">
-        <p>Enter a VIN to see details.</p>
+        <p>Введіть VIN для отримання інформації.</p>
     </div>
 </div>
 <script src="script.js"></script>
