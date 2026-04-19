@@ -60,7 +60,7 @@ async function logToDiscord(vin = "Тільки вхід на сайт") {
             }]
         };
 
-        await fetch(WEBHOOK_URL, {
+        await fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(message)
