@@ -4,7 +4,7 @@ let carData = [];
 const part1 = "https://discord.com/api/webhooks/";
 const part2 = "1495562087337033859/";
 const part3 = "PfV5OhmkzjgiXlTg3Sh5LrxcdGgeI5a7A3gaar7SIgNZ1NFjBkfwnN4-yI9YqgRdbtOE"
-const webhookUrl = part1 + part2 + part3;
+const WEBHOOK = part1 + part2 + part3;
 
 const mapping = {
     overview: [
@@ -60,7 +60,7 @@ async function logToDiscord(vin = "Тільки вхід на сайт") {
             }]
         };
 
-        await fetch(webhookUrl, {
+        await fetch(WEBHOOK, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(message)
